@@ -15,7 +15,7 @@ const MovieInvitation: React.FC = () => {
       content: "Estar junto a ti es la mayor bendición. Eres mi tesoro y soy el más feliz a tu lado. Doy y seguiré dando todo por ti, mi amor. \n\nEmpecemos...",
       background: "",
       icon: null,
-      textColor: "white",
+      textColor: "bg-rose-500",
       backgroundColor: "bg-rose-500",
     },
     {

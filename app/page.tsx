@@ -6,7 +6,7 @@ import { Heart, Film, Clock, MapPin, Camera } from 'lucide-react';
 const MovieInvitation: React.FC = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [scrolling, setScrolling] = useState(false);
-  const [accepted, setAccepted] = useState(false); // Estado para controlar el mensaje
+  const [accepted, setAccepted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const sections = [
@@ -53,7 +53,7 @@ const MovieInvitation: React.FC = () => {
       additionalContent: !accepted && (
         <button
           className="mt-6 px-8 py-3 bg-rose-600 text-white rounded-full font-bold hover:bg-rose-700 transition-colors"
-          onClick={() => setAccepted(true)} // Actualiza el estado al aceptar
+          onClick={() => setAccepted(true)}
         >
           ¿Aceptas?
         </button>
@@ -113,9 +113,15 @@ const MovieInvitation: React.FC = () => {
               duration: 0.8,
               ease: [0.645, 0.045, 0.355, 1],
             }}
-            className={`absolute inset-0 flex items-center justify-center 
-              ${index === currentSection ? "z-20" : "z-10"} 
-              ${section.backgroundColor || ""}`}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: index === currentSection ? 20 : 10,
+              backgroundColor: section.backgroundColor || 'transparent'
+            }}
           >
             {section.background && (
               <div
@@ -128,12 +134,16 @@ const MovieInvitation: React.FC = () => {
             )}
 
             <div className="relative z-30 text-center px-4 sm:px-8 w-full max-w-2xl">
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="flex flex-col items-center"
-              >
+            <motion.div
+  initial={{ scale: 0.8, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ delay: 0.2, duration: 0.6 }}
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }}
+>
                 {section.icon && <div className="mb-6">{section.icon}</div>}
                 <h2
                   className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 font-['Playfair_Display'] 

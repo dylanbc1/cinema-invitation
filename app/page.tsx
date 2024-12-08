@@ -15,31 +15,40 @@ const MovieInvitation: React.FC = () => {
       content: "Estar junto a ti es la mayor bendición. Eres mi tesoro y soy el más feliz a tu lado. Doy y seguiré dando todo por ti, mi amor. \n\nEmpecemos...",
       background: "",
       icon: null,
-      textColor: "bg-rose-500",
+      titleColor: "text-rose-500",
+      contentColor: "text-neutral-800",
     },
     {
       title: "Nuestra Noche",
       content: "Una invitación especial...",
-      background: "hs.cloudinary.com/dbcdnlxle/image/upload/v1733594346/pexels-francesco-ungaro-998641_d7x7fr.jpg",
+      background: "",
       icon: <Heart className="w-16 h-16 text-rose-500" />,
+      titleColor: "text-neutral-800",
+      contentColor: "text-neutral-700",
     },
     {
       title: "Película Juntos",
       content: "8 de diciembre, un día para recordar",
-      background: "/placeholder-cinema.jpg",
+      background: "",
       icon: <Film className="w-16 h-16 text-rose-500" />,
+      titleColor: "text-neutral-800",
+      contentColor: "text-neutral-600",
     },
     {
       title: "Hora Perfecta",
       content: "A las 7:20 PM",
-      background: "/placeholder-time.jpg",
+      background: "",
       icon: <Clock className="w-16 h-16 text-rose-500" />,
+      titleColor: "text-neutral-800",
+      contentColor: "text-neutral-600",
     },
     {
       title: "Lugar Especial",
       content: "Un lugar que hemos recorrido juntos",
-      background: "/placeholder-location.jpg",
+      background: "",
       icon: <MapPin className="w-16 h-16 text-rose-500" />,
+      titleColor: "text-neutral-800",
+      contentColor: "text-neutral-600",
     },
     {
       title: "Nuestro Momento",
@@ -48,7 +57,8 @@ const MovieInvitation: React.FC = () => {
         : "Ver 'We Live In Time' juntos el 8 de diciembre del 2024",
       background: "https://res.cloudinary.com/dbcdnlxle/image/upload/v1733676960/weliveintime_xev9vc.jpg",
       icon: <Camera className="w-16 h-16 text-white" />,
-      textColor: "text-white",
+      titleColor: "text-white",
+      contentColor: "text-white",
       additionalContent: !accepted && (
         <button
           className="mt-6 px-8 py-3 bg-rose-600 text-white rounded-full font-bold hover:bg-rose-700 transition-colors"
@@ -75,12 +85,41 @@ const MovieInvitation: React.FC = () => {
     setTimeout(() => setScrolling(false), 800);
   };
 
+  // Touch support for mobile
+  const handleTouchStart = useRef<number | null>(null);
+  
+  const handleTouchMove = (e: TouchEvent) => {
+    if (handleTouchStart.current === null) return;
+
+    const currentTouch = e.touches[0].clientY;
+    const diff = handleTouchStart.current - currentTouch;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && currentSection < sections.length - 1) {
+        setCurrentSection((prev) => prev + 1);
+      } else if (diff < 0 && currentSection > 0) {
+        setCurrentSection((prev) => prev - 1);
+      }
+      handleTouchStart.current = null;
+    }
+  };
+
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
+      // Wheel event for desktop
       container.addEventListener("wheel", handleWheel, { passive: false });
+      
+      // Touch events for mobile
+      container.addEventListener("touchstart", (e) => {
+        handleTouchStart.current = e.touches[0].clientY;
+      });
+      container.addEventListener("touchmove", handleTouchMove, { passive: false });
+
       return () => {
         container.removeEventListener("wheel", handleWheel);
+        container.removeEventListener("touchstart", () => {});
+        container.removeEventListener("touchmove", handleTouchMove);
       };
     }
   }, [currentSection, scrolling]);
@@ -97,7 +136,8 @@ const MovieInvitation: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative h-screen w-screen overflow-hidden bg-neutral-50"
+      className="relative h-screen w-screen overflow-hidden touch-none"
+      style={{ touchAction: 'none' }}
     >
       <AnimatePresence>
         {sections.map((section, index) => (
@@ -119,10 +159,10 @@ const MovieInvitation: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               zIndex: index === currentSection ? 20 : 10,
-              backgroundColor: 'transparent'
+              backgroundColor: index < sections.length - 1 ? 'white' : 'transparent'
             }}
           >
-            {section.background && (
+            {section.background && index === sections.length - 1 && (
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-90"
                 style={{
@@ -133,28 +173,24 @@ const MovieInvitation: React.FC = () => {
             )}
 
             <div className="relative z-30 text-center px-4 sm:px-8 w-full max-w-2xl">
-            <motion.div
-  initial={{ scale: 0.8, opacity: 0 }}
-  animate={{ scale: 1, opacity: 1 }}
-  transition={{ delay: 0.2, duration: 0.6 }}
-  style={{
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  }}
->
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}
+              >
                 {section.icon && <div className="mb-6">{section.icon}</div>}
                 <h2
-                  className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 font-['Playfair_Display'] 
-                    ${"text-neutral-800"} 
-                    ${index === 0 || index === sections.length - 1 ? "font-bold" : ""}`}
+                  className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 font-['Playfair_Display'] ${section.titleColor}`}
                 >
                   {section.title}
                 </h2>
                 <p
-                  className={`text-xl sm:text-2xl font-['Lora'] max-w-prose ${
-                    "text-neutral-600"
-                  }`}
+                  className={`text-xl sm:text-2xl font-['Lora'] max-w-prose ${section.contentColor}`}
                 >
                   {section.content}
                 </p>

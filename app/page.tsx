@@ -54,7 +54,7 @@ const MovieInvitation: React.FC = () => {
       title: "Nuestro Momento",
       content: accepted
         ? "Pronto nos vemos princesa. Te amo por y para siempre, amor de todas mis vidas."
-        : "Ver 'We Live In Time' juntos el 8 de diciembre del 2024",
+        : "Ver 'We Live In Time' juntos, el 8 de diciembre del 2024 a las 7:20PM en Chipichape",
       background: "https://res.cloudinary.com/dbcdnlxle/image/upload/v1733676960/weliveintime_xev9vc.jpg",
       icon: <Camera className="w-16 h-16 text-white" />,
       titleColor: "text-white",

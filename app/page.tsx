@@ -16,7 +16,6 @@ const MovieInvitation: React.FC = () => {
       background: "",
       icon: null,
       textColor: "bg-rose-500",
-      backgroundColor: "bg-rose-500",
     },
     {
       title: "Nuestra Noche",
@@ -120,7 +119,7 @@ const MovieInvitation: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               zIndex: index === currentSection ? 20 : 10,
-              backgroundColor: section.backgroundColor || 'transparent'
+              backgroundColor: 'transparent'
             }}
           >
             {section.background && (
@@ -147,14 +146,14 @@ const MovieInvitation: React.FC = () => {
                 {section.icon && <div className="mb-6">{section.icon}</div>}
                 <h2
                   className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 font-['Playfair_Display'] 
-                    ${section.textColor || "text-neutral-800"} 
+                    ${"text-neutral-800"} 
                     ${index === 0 || index === sections.length - 1 ? "font-bold" : ""}`}
                 >
                   {section.title}
                 </h2>
                 <p
                   className={`text-xl sm:text-2xl font-['Lora'] max-w-prose ${
-                    section.textColor || "text-neutral-600"
+                    "text-neutral-600"
                   }`}
                 >
                   {section.content}
